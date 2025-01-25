@@ -5,14 +5,16 @@ cap = cv2.VideoCapture(filepath)
 output = []
 
 LAST_FRAME = None
-SIZE = (20, 15)
+SIZE = (12, 9)
 
 
 def compress(changed_pixels):
     """Compress the changes into position-color pairs."""
     result = []
     for position, color in changed_pixels:
-        result.append(f"{position:03}{color}")  # Position with 4 digits, followed by the color value (0-9)
+        result.append(
+            f"{position:03}{color}"
+        )  # Position with 4 digits, followed by the color value (0-9)
     return result
 
 
@@ -53,28 +55,6 @@ while True:
     # Set the current frame as the last frame
     LAST_FRAME = quantized
 
-# LZW compression
-def lzw_encode(data):
-    dictionary = {chr(i): chr(i) for i in range(256)}
-    result = []
-    w = ""
-    code = 256
-
-    for c in data:
-        wc = w + c
-        if wc in dictionary:
-            w = wc
-        else:
-            result.append(dictionary[w])
-            dictionary[wc] = chr(code)
-            code += 1
-            w = c
-
-    if w:
-        result.append(dictionary[w])
-
-    return ''.join(result)
-
 # Save output to file with frame separators
 with open("output.txt", "w", encoding="utf8") as f:
-    f.write(lzw_encode("#".join(output)))
+    f.write("#".join(output))
