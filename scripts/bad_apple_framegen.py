@@ -1,4 +1,8 @@
+"""Simple script to encode frames for the bad apple example"""
+
 import cv2
+
+# pylint: disable=no-member
 
 filepath = input("File path: ")
 cap = cv2.VideoCapture(filepath)
@@ -8,10 +12,10 @@ LAST_FRAME = None
 SIZE = (12, 9)
 
 
-def compress(changed_pixels):
+def compress(pixels):
     """Compress the changes into position-color pairs."""
     result = []
-    for position, color in changed_pixels:
+    for position, color in pixels:
         result.append(
             f"{position:03}{color}"
         )  # Position with 4 digits, followed by the color value (0-9)
